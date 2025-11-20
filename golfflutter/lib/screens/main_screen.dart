@@ -46,6 +46,27 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  void clearAll() {
+    setState(() {
+      _parController.clear();
+      _frontXController.clear();
+      _frontYController.clear();
+      _middleXController.clear();
+      _middleYController.clear();
+      _backXController.clear();
+      _backYController.clear();
+      
+      for (var shot in shots) {
+        shot['x']?.dispose();
+        shot['y']?.dispose();
+      }
+      shots.clear();
+      addShot();
+      
+      result = null;
+    });
+  }
+
   void checkGir() {
     if (_parController.text.isEmpty ||
         _frontXController.text.isEmpty || _frontYController.text.isEmpty ||
@@ -213,17 +234,35 @@ class _MainScreenState extends State<MainScreen> {
               }),
               SizedBox(height: 20),
               Center(
-                child: ElevatedButton(
-                  onPressed: checkGir,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFD9D9D9),
-                    foregroundColor: Colors.black,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                    elevation: 0,
-                    overlayColor: Colors.black.withOpacity(0.1),
-                  ),
-                  child: Text('Check GIR', style: TextStyle(fontSize: 16)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: checkGir,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFD9D9D9),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                        elevation: 0,
+                        overlayColor: Colors.black.withOpacity(0.1),
+                      ),
+                      child: Text('Check GIR', style: TextStyle(fontSize: 16)),
+                    ),
+                    SizedBox(width: 15),
+                    ElevatedButton(
+                      onPressed: clearAll,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFD9D9D9),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                        elevation: 0,
+                        overlayColor: Colors.black.withOpacity(0.1),
+                      ),
+                      child: Text('Clear', style: TextStyle(fontSize: 16)),
+                    ),
+                  ],
                 ),
               ),
               if (result != null) ...[
